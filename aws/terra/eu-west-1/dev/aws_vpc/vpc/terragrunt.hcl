@@ -5,7 +5,7 @@ include {
 locals {
   env    = jsondecode(file(find_in_parent_folders("env.json")))
   region = jsondecode(file(find_in_parent_folders("region.json")))
-  common = jsondecode(file(find_in_parent_folders("../common.json")))
+  common = jsondecode(file(find_in_parent_folders("account.json")))
 }
 
 terraform {
@@ -17,6 +17,7 @@ inputs = {
   stage                            = "${local.region.aws_region}"
   environment                      = "${local.env.env_name}"
   name                             = "vpc"
-  ipv4_primary_cidr_block          = "${local.common.vpc_cidr_block_prefix}.0.0/16"
+  
+  ipv4_primary_cidr_block          = "${local.env.vpc_cidr_block_prefix}.0.0/16"
   assign_generated_ipv6_cidr_block = false
 }

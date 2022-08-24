@@ -1,6 +1,6 @@
 locals {
-  region = jsondecode(file("region.json"))
-  common = jsondecode(file(find_in_parent_folders("../common.json")))
+  region = jsondecode(file(find_in_parent_folders("region.json")))
+  common = jsondecode(file(find_in_parent_folders("account.json")))
 }
 
 remote_state {
@@ -38,6 +38,7 @@ provider "aws" {
   default_tags {
     tags = {
       Terraform = "true"
+      Terragrunt = "true"
     }
   }
 }
