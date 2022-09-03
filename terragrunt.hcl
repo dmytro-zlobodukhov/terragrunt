@@ -1,6 +1,9 @@
 locals {
+  env    = jsondecode(file(find_in_parent_folders("env.json")))
   region = jsondecode(file(find_in_parent_folders("region.json")))
   common = jsondecode(file(find_in_parent_folders("account.json")))
+  
+  resources_prefix = "${local.common.namespace}-${local.env.env_name}-${local.region.aws_region}"
 }
 
 remote_state {
@@ -13,9 +16,9 @@ remote_state {
   }
 
   config = {
-    bucket         = "${local.common.namespace}-${local.region.aws_region}-terraform-state"
+    bucket         = "${local.resources_prefix}-terraform-state"
     key            = "${path_relative_to_include()}/terraform.tfstate"
-    dynamodb_table = "${local.common.namespace}-${local.region.aws_region}-terraform-state-lock"
+    dynamodb_table = "${local.resources_prefix}-terraform-state-lock"
     encrypt        = true
     region         = "${local.region.aws_region}"
     profile        = "${local.common.aws_profile}"

@@ -30,6 +30,7 @@ inputs = {
   stage                  = "${local.region.aws_region}"
   environment            = "${local.env.env_name}"
   name                   = "subnet"
+  attributes             = ["${basename(get_terragrunt_dir())}"]
 
   vpc_id                 = dependency.vpc.outputs.vpc_id
   igw_id                 = [dependency.vpc.outputs.igw_id]
