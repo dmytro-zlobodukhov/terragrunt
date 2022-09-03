@@ -18,6 +18,6 @@ inputs = {
   environment                      = "${local.env.env_name}"
   name                             = "vpc"
   
-  ipv4_primary_cidr_block          = "${local.env.vpc_cidr_block_prefix}.0.0/16"
+  ipv4_primary_cidr_block          = "${local.env.vpc_cidr_block_prefix}.${local.env.vpc_cidr_block_suffix}"
   assign_generated_ipv6_cidr_block = false
 }
