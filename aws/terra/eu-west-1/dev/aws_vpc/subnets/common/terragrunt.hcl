@@ -7,8 +7,10 @@ locals {
   region = jsondecode(file(find_in_parent_folders("region.json")))
   common = jsondecode(file(find_in_parent_folders("account.json")))
 
-  subnet_ipv4_cidr_block    = ["${local.env.vpc_cidr_block_prefix}.0.0/17"]
-  subnet_availability_zones = ["${local.region.aws_region}a", "${local.region.aws_region}b"]
+  # VPC SUBNET SETTINGS
+  ipv4_cidr_block_prefix = local.env.vpc_cidr_block_prefix
+  ipv4_cidr_block_suffix = local.env.subnets["${basename(get_terragrunt_dir())}"].cidr_block_suffix
+  ipv4_cidr_block        = "${local.ipv4_cidr_block_prefix}.${local.ipv4_cidr_block_suffix}"
 }
 
 terraform {
@@ -26,25 +28,23 @@ dependency "vpc" {
 }
 
 inputs = {
-  namespace              = "${local.common.namespace}"
-  stage                  = "${local.region.aws_region}"
-  environment            = "${local.env.env_name}"
-  name                   = "subnet"
-  attributes             = ["${basename(get_terragrunt_dir())}"]
+  namespace   = "${local.common.namespace}"
+  stage       = "${local.region.aws_region}"
+  environment = "${local.env.env_name}"
+  name        = "subnet"
+  attributes  = ["${basename(get_terragrunt_dir())}"]
 
-  vpc_id                 = dependency.vpc.outputs.vpc_id
-  igw_id                 = [dependency.vpc.outputs.igw_id]
-  ipv4_cidr_block        = local.subnet_ipv4_cidr_block
-  availability_zones     = local.subnet_availability_zones
+  vpc_id = dependency.vpc.outputs.vpc_id
+  igw_id = [dependency.vpc.outputs.igw_id]
 
-  nat_gateway_enabled    = true
-  max_nats               = 1
-  public_subnets_enabled = true
+  ipv4_cidr_block             = ["${local.ipv4_cidr_block}"]
+  private_route_table_enabled = local.env.subnets["${basename(get_terragrunt_dir())}"].private_route_table_enabled
+  public_subnets_enabled      = local.env.subnets["${basename(get_terragrunt_dir())}"].public_subnets_enabled
+  nat_gateway_enabled         = local.env.subnets["${basename(get_terragrunt_dir())}"].nat_gateway_enabled
+  private_subnets_enabled     = local.env.subnets["${basename(get_terragrunt_dir())}"].private_subnets_enabled
+  max_subnet_count            = local.env.subnets["${basename(get_terragrunt_dir())}"].max_subnet_count
+  max_nats                    = local.env.subnets["${basename(get_terragrunt_dir())}"].max_nats
 
-  public_subnets_additional_tags = {
-    "Description" = "Shared public subnet for various workloads (such as external ALBs, NAT Gateways, Bastion hosts, etc.)"
-  }
-  private_subnets_additional_tags = {
-    "Description" = "Shared private subnet for various workloads (such as internal ALBs, EKS Worker Nodes, etc.)"
-  }
+  public_subnets_additional_tags  = merge(local.env.subnets["${basename(get_terragrunt_dir())}"].public_subnets_additional_tags)
+  private_subnets_additional_tags = merge(local.env.subnets["${basename(get_terragrunt_dir())}"].private_subnets_additional_tags)
 }

@@ -6,6 +6,11 @@ locals {
   env    = jsondecode(file(find_in_parent_folders("env.json")))
   region = jsondecode(file(find_in_parent_folders("region.json")))
   common = jsondecode(file(find_in_parent_folders("account.json")))
+
+  # VPC SUBNET SETTINGS
+  ipv4_cidr_block_prefix = local.env.vpc_cidr_block_prefix
+  ipv4_cidr_block_suffix = local.env.subnets["${basename(get_terragrunt_dir())}"].cidr_block_suffix
+  ipv4_cidr_block        = "${local.ipv4_cidr_block_prefix}.${local.ipv4_cidr_block_suffix}"
 }
 
 terraform {
@@ -32,18 +37,19 @@ inputs = {
   stage       = "${local.region.aws_region}"
   environment = "${local.env.env_name}"
   name        = "subnet"
-  attributes = ["${basename(get_terragrunt_dir())}"]
+  attributes  = ["${basename(get_terragrunt_dir())}"]
 
-  availability_zones          = ["${local.region.aws_region}a", "${local.region.aws_region}b"]
-  vpc_id                      = dependency.vpc.outputs.vpc_id
-  igw_id                      = [dependency.vpc.outputs.igw_id]
-  ipv4_cidr_block             = ["${local.env.vpc_cidr_block_prefix}.240.0/26"]
-  private_route_table_enabled = true
-  public_subnets_enabled      = false
-  nat_gateway_enabled         = false
-  private_subnets_enabled     = true
-  max_subnet_count            = 2 # as we have only two AZs, we need maximum 2 subnets for control plane
-  private_subnets_additional_tags = {
-    "Description" = "Dedicated private subnet for AWS EKS Control Plane"
-  }
+  vpc_id = dependency.vpc.outputs.vpc_id
+  igw_id = [dependency.vpc.outputs.igw_id]
+
+  ipv4_cidr_block             = ["${local.ipv4_cidr_block}"]
+  private_route_table_enabled = local.env.subnets["${basename(get_terragrunt_dir())}"].private_route_table_enabled
+  public_subnets_enabled      = local.env.subnets["${basename(get_terragrunt_dir())}"].public_subnets_enabled
+  nat_gateway_enabled         = local.env.subnets["${basename(get_terragrunt_dir())}"].nat_gateway_enabled
+  private_subnets_enabled     = local.env.subnets["${basename(get_terragrunt_dir())}"].private_subnets_enabled
+  max_subnet_count            = local.env.subnets["${basename(get_terragrunt_dir())}"].max_subnet_count
+  max_nats                    = local.env.subnets["${basename(get_terragrunt_dir())}"].max_nats
+
+  public_subnets_additional_tags  = merge(local.env.subnets["${basename(get_terragrunt_dir())}"].public_subnets_additional_tags)
+  private_subnets_additional_tags = merge(local.env.subnets["${basename(get_terragrunt_dir())}"].private_subnets_additional_tags)
 }
