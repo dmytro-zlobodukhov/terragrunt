@@ -11,8 +11,8 @@ In the `vpc` folder you can find code related to the `AWS VPC` itself:
 
 In the `subnets` folder you can find pre-configured examples:
 - `common` - by default Terragrunt will create 2 `public` and 2 `private` subnets with the netmask `/20`, NAT gateway, Internet Gateway, routing tables, routing table associations, etc. This subnet is intended to use for different shared resources, such as external/internal ELBs, NAT Gateways, ECS/EKS Nodes and Node Groups, Bastion hosts, etc.
-- `databases` - will create 2 `private` subnets and routing table. This subnet is intended to use for different AWS Database solutions, such as RDS, Redshift, DocumentDB, etc.
-- `eks-control-plane` - will create 2 private subnets and routing table. This subnet is intended to use for for AWS EKS Control Plane cluster.
+- `databases` - will create 2 `private` subnets with the netmask `/24` and routing table. This subnet is intended to use for different AWS Database solutions, such as RDS, Redshift, DocumentDB, etc.
+- `eks-control-plane` - will create 2 private subnets with the netmask `/27` and routing table. This subnet is intended to use for for AWS EKS Control Plane cluster.
 
 Worth to mention:
 1. You can create subnets with default pre-configured values or edit setting for your needs.
