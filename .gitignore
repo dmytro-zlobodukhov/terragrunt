@@ -40,3 +40,7 @@ terraform.rc
 **/.terragrunt-cache/*
 .terragrunt-cache/*
 **/.terragrunt-cache
+
+# Terragrunt execution resultant files
+**/secrets/*
+secrets
