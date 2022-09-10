@@ -75,7 +75,7 @@ inputs = {
       type        = "ingress"
       from_port   = 13548
       to_port     = 13548
-      protocol    = "udp"
+      protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
       self        = null
       description = "Allow OpenVPN access from anywhere"
@@ -85,10 +85,20 @@ inputs = {
       type        = "ingress"
       from_port   = 13549
       to_port     = 13549
-      protocol    = "udp"
+      protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
       self        = null
       description = "Allow OpenVPN access (service accounts) from anywhere"
+    },
+    {
+      key         = "WG"
+      type        = "ingress"
+      from_port   = 23548
+      to_port     = 23548
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+      self        = null
+      description = "Allow WireGuard access from anywhere"
     }
   ]
 

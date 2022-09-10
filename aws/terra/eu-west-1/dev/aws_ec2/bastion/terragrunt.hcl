@@ -7,26 +7,26 @@ locals {
   region = jsondecode(file(find_in_parent_folders("region.json")))
   common = jsondecode(file(find_in_parent_folders("account.json")))
 
-  user_data = file("./scripts/install-vpn.sh")
+  user_data = file("./scripts/install-vpn-oracle.sh")
 
   amis = {
     "us-east-1" = {
-      "ami_id"        = "ami-01dcdbd83c7e846ec"
+      "ami_id"        = "ami-047627086234fbbe7"
       "ami_owner"     = "131827586825",
       "instance_size" = "t3.micro"
     },
     "us-east-2" = {
-      "ami_id"        = "ami-08142824d0029d801"
+      "ami_id"        = "ami-00ea24d1cdc779a79"
       "ami_owner"     = "131827586825",
       "instance_size" = "t3.micro"
     },
     "eu-west-1" = {
-      "ami_id"        = "ami-0535dfe71f7948013"
+      "ami_id"        = "ami-0f7601d8419fac927"
       "ami_owner"     = "131827586825",
       "instance_size" = "t3.micro"
     },
     "eu-west-2" = {
-      "ami_id"        = "ami-0ff6b53b4a63a025c"
+      "ami_id"        = "ami-0f2f286eb36c2542c"
       "ami_owner"     = "131827586825",
       "instance_size" = "t3.micro"
     },
@@ -90,7 +90,7 @@ inputs = {
 
   user_data_base64 = base64encode(local.user_data)
 
-  // ssm_patch_manager_enabled       = true
+  ssm_patch_manager_enabled = true # This setting will add "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore" policy to the Instance Role
   // ssm_patch_manager_s3_log_bucket = "${local.common.namespace}-${local.env.env_name}-${local.region.aws_region}-ssm-logs"
 
 
