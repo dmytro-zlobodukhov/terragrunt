@@ -40,16 +40,16 @@ inputs = {
   allow_all_egress = true
 
   rules = [
-    {
-      key         = "ssh"
-      type        = "ingress"
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = local.sg_ingress_ssh_alowed_cidrs
-      self        = null
-      description = "Allow SSH access from allowed CIDR block"
-    },
+    // {
+    //   key         = "ssh"
+    //   type        = "ingress"
+    //   from_port   = 22
+    //   to_port     = 22
+    //   protocol    = "tcp"
+    //   cidr_blocks = local.sg_ingress_ssh_alowed_cidrs
+    //   self        = null
+    //   description = "Allow SSH access from allowed CIDR block"
+    // },
     {
       key         = "HTTP"
       type        = "ingress"
