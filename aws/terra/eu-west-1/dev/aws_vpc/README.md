@@ -1,4 +1,4 @@
-### This folder contains `Terragrunt` modules related to `AWS VPC`.  
+### This folder contains `Terragrunt` modules related to `AWS VPC` and all related resources.  
 [Back to the modules](../README.md)
 
 You can find `terragrunt.hcl` file in each folder. Each file contains Terragrunt code and some variables and parameters.  
