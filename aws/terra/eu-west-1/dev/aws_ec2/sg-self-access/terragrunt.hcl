@@ -28,11 +28,11 @@ dependency "subnets_common" {
 }
 
 inputs = {
-  namespace                        = "${local.common.namespace}"
-  stage                            = "${local.region.aws_region}"
-  environment                      = "${local.env.env_name}"
-  name                             = "self-service-sg"
-  
+  namespace   = "${local.common.namespace}"
+  stage       = "${local.region.aws_region}"
+  environment = "${local.env.env_name}"
+  name        = "self-service-sg"
+
   allow_all_egress = true
 
   rules = [

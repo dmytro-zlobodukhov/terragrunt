@@ -61,15 +61,15 @@ dependency "eks" {
 }
 
 inputs = {
-  namespace                        = "${local.common.namespace}"
-  stage                            = "${local.region.aws_region}"
-  environment                      = "${local.env.env_name}"
-  name                             = "eks-cluster"
-  
+  namespace   = "${local.common.namespace}"
+  stage       = "${local.region.aws_region}"
+  environment = "${local.env.env_name}"
+  name        = "eks-cluster"
+
   aws_account_number          = get_aws_account_id()
   eks_cluster_oidc_issuer_url = dependency.eks.outputs.eks_cluster_identity_oidc_issuer
-  service_account_name      = "autoscaler"
-  service_account_namespace = "kube-system"
+  service_account_name        = "autoscaler"
+  service_account_namespace   = "kube-system"
   aws_iam_policy_document = [
     local.aws_iam_policy_eks_alb_autoscaler
   ]

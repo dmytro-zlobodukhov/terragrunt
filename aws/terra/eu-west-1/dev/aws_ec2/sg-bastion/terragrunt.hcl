@@ -32,11 +32,11 @@ dependency "subnets_common" {
 }
 
 inputs = {
-  namespace                        = "${local.common.namespace}"
-  stage                            = "${local.region.aws_region}"
-  environment                      = "${local.env.env_name}"
-  name                             = "bastion-sg"
-  
+  namespace   = "${local.common.namespace}"
+  stage       = "${local.region.aws_region}"
+  environment = "${local.env.env_name}"
+  name        = "bastion-sg"
+
   allow_all_egress = true
 
   rules = [

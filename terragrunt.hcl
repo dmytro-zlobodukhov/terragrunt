@@ -2,7 +2,7 @@ locals {
   env    = jsondecode(file(find_in_parent_folders("env.json")))
   region = jsondecode(file(find_in_parent_folders("region.json")))
   common = jsondecode(file(find_in_parent_folders("account.json")))
-  
+
   resources_prefix = "${local.common.namespace}-${local.env.env_name}-${local.region.aws_region}"
 }
 
