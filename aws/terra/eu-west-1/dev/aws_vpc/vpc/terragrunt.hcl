@@ -13,11 +13,11 @@ terraform {
 }
 
 inputs = {
-  namespace                        = "${local.common.namespace}"
-  stage                            = "${local.region.aws_region}"
-  environment                      = "${local.env.env_name}"
-  name                             = "vpc"
-  
+  namespace   = "${local.common.namespace}"
+  stage       = "${local.region.aws_region}"
+  environment = "${local.env.env_name}"
+  name        = "vpc"
+
   ipv4_primary_cidr_block          = "${local.env.vpc_cidr_block_prefix}.${local.env.vpc_cidr_block_suffix}"
   assign_generated_ipv6_cidr_block = false
 }
