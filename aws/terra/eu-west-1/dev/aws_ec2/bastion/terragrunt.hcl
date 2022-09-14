@@ -11,23 +11,15 @@ locals {
 
   amis = {
     "us-east-1" = {
-      "ami_id"        = "ami-047627086234fbbe7"
-      "ami_owner"     = "131827586825",
       "instance_size" = "t3.micro"
     },
     "us-east-2" = {
-      "ami_id"        = "ami-00ea24d1cdc779a79"
-      "ami_owner"     = "131827586825",
       "instance_size" = "t3.micro"
     },
     "eu-west-1" = {
-      "ami_id"        = "ami-0f7601d8419fac927"
-      "ami_owner"     = "131827586825",
       "instance_size" = "t3.micro"
     },
     "eu-west-2" = {
-      "ami_id"        = "ami-0f2f286eb36c2542c"
-      "ami_owner"     = "131827586825",
       "instance_size" = "t3.micro"
     },
   }
@@ -42,7 +34,8 @@ dependencies {
     "../../aws_vpc/vpc",
     "../../aws_vpc/subnets/common",
     "../sg-bastion",
-    "../bastion-ssh-key"
+    "../bastion-ssh-key",
+    "../ami-finder/oracle-linux-8"
   ]
 }
 
@@ -62,14 +55,18 @@ dependency "bastion_ssh_key" {
   config_path = "../bastion-ssh-key"
 }
 
+dependency "ami_finder" {
+  config_path = "../ami-finder/oracle-linux-8"
+}
+
 inputs = {
   namespace   = "${local.common.namespace}"
   stage       = "${local.region.aws_region}"
   environment = "${local.env.env_name}"
   name        = "bastion-host"
 
-  ami           = local.amis["${local.region.aws_region}"].ami_id
-  ami_owner     = local.amis["${local.region.aws_region}"].ami_owner
+  ami           = dependency.ami_finder.outputs.image_id
+  ami_owner     = dependency.ami_finder.outputs.owner_id
   ssh_key_pair  = dependency.bastion_ssh_key.outputs.key_name
   instance_type = local.amis["${local.region.aws_region}"].instance_size
 
@@ -103,3 +100,33 @@ inputs = {
   //   }
   // )
 }
+
+// generate "generate-local" {
+//   path      = "_data_dep.tf"
+//   if_exists = "overwrite_terragrunt"
+//   contents  = <<EOF
+// #############
+// # Variables #
+// #############
+
+// #############
+// #  Outputs  #
+// #############
+
+// #############
+// #   Data    #
+// #############
+// data "aws_ami" "current" {
+//   most_recent = local.most_recent
+//   owners      = local.owners
+
+//   dynamic "filter" {
+//     for_each = toset(local.filter)
+//     content {
+//       name   = filter.value["name"]
+//       values = filter.value["values"]
+//     }
+//   }
+// }
+// EOF
+// }
