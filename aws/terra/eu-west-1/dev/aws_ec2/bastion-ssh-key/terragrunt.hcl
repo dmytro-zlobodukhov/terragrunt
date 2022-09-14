@@ -18,7 +18,7 @@ inputs = {
   environment = "${local.env.env_name}"
   name        = "bastion-ssh-key"
 
-  ssh_public_key_path   = "${get_path_from_repo_root()}/secrets"
+  ssh_public_key_path   = "${get_original_terragrunt_dir()}/secrets"
   generate_ssh_key      = "true"
   private_key_extension = ".pem"
   public_key_extension  = ".pub"
