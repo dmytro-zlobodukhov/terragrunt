@@ -8,21 +8,6 @@ locals {
   common = jsondecode(file(find_in_parent_folders("account.json")))
 
   user_data = file("./scripts/install-vpn-oracle.sh")
-
-  amis = {
-    "us-east-1" = {
-      "instance_size" = "t3.micro"
-    },
-    "us-east-2" = {
-      "instance_size" = "t3.micro"
-    },
-    "eu-west-1" = {
-      "instance_size" = "t3.micro"
-    },
-    "eu-west-2" = {
-      "instance_size" = "t3.micro"
-    },
-  }
 }
 
 terraform {
@@ -68,7 +53,7 @@ inputs = {
   ami           = dependency.ami_finder.outputs.image_id
   ami_owner     = dependency.ami_finder.outputs.owner_id
   ssh_key_pair  = dependency.bastion_ssh_key.outputs.key_name
-  instance_type = local.amis["${local.region.aws_region}"].instance_size
+  instance_type = "${local.env.ec2_bastion_instance_type}"
 
   vpc_id                      = dependency.vpc.outputs.vpc_id
   security_group_enabled      = false
@@ -100,33 +85,3 @@ inputs = {
   //   }
   // )
 }
-
-// generate "generate-local" {
-//   path      = "_data_dep.tf"
-//   if_exists = "overwrite_terragrunt"
-//   contents  = <<EOF
-// #############
-// # Variables #
-// #############
-
-// #############
-// #  Outputs  #
-// #############
-
-// #############
-// #   Data    #
-// #############
-// data "aws_ami" "current" {
-//   most_recent = local.most_recent
-//   owners      = local.owners
-
-//   dynamic "filter" {
-//     for_each = toset(local.filter)
-//     content {
-//       name   = filter.value["name"]
-//       values = filter.value["values"]
-//     }
-//   }
-// }
-// EOF
-// }
