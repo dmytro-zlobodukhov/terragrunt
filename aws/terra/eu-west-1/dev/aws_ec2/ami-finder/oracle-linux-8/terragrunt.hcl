@@ -18,7 +18,7 @@ inputs = {
   filter = [
     {
       name = "name"
-      values = ["OL8.5-x86_64-HVM-*"]
+      values = ["OL8.5-x86_64-HVM-2021-11-24"]
     }
   ]
 }
