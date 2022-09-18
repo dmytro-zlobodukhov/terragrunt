@@ -13,5 +13,5 @@ terraform {
 }
 
 inputs = {
-  zone_name = "test001.com" # Hosted Zone must exist in Route53
+  zone_name = local.env.dns_parent_zone_name # Hosted Zone must exist in Route53
 }
