@@ -14,10 +14,10 @@ terraform {
 
 inputs = {
   most_recent = true
-  owners = ["131827586825"]
+  owners      = ["131827586825"]
   filter = [
     {
-      name = "name"
+      name   = "name"
       values = ["OL8.5-x86_64-HVM-2021-11-24"]
     }
   ]

@@ -8,7 +8,7 @@ locals {
   common = jsondecode(file(find_in_parent_folders("account.json")))
 
   ssm_parameter_store_rds_master_password = "/${local.common.namespace}/${local.env.env_name}/${local.region.aws_region}/rds/postgres/master_password"
-  random_password = trim(trimspace(run_cmd("sh", "-c", "aws secretsmanager get-random-password --password-length 30 --exclude-punctuation --query 'RandomPassword'")), "\"")
+  random_password                         = trim(trimspace(run_cmd("sh", "-c", "aws secretsmanager get-random-password --password-length 30 --exclude-punctuation --query 'RandomPassword'")), "\"")
 }
 
 terraform {
