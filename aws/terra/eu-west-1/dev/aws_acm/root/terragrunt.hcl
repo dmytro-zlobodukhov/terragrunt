@@ -12,6 +12,12 @@ terraform {
   source = "tfr:///cloudposse/acm-request-certificate/aws//?version=0.16.2"
 }
 
+dependencies {
+  paths = [
+    "../../aws_route53/external"
+  ]
+}
+
 inputs = {
   domain_name                       = local.env.dns_parent_zone_name # Hosted Zone must exist in Route53
   process_domain_validation_options = true
