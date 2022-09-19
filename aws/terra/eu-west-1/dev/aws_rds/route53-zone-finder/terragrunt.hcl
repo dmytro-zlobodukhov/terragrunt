@@ -12,6 +12,12 @@ terraform {
   source = "git::git@github.com:dmytro-zlobodukhov/terraform-modules.git//tg-helpers/route53-zone-finder/?ref=main"
 }
 
+dependencies {
+  paths = [
+    "../../aws_route53/external"
+  ]
+}
+
 inputs = {
   zone_name = local.env.dns_parent_zone_name # Hosted Zone must exist in Route53
 }

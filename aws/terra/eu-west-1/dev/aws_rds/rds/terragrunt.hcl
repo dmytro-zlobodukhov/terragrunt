@@ -18,7 +18,7 @@ dependencies {
     "../../aws_vpc/subnets/databases",
     "../../aws_ec2/sg-bastion",
     "../route53-zone-finder",
-    "../ssm/parameter-store/read"
+    "../ssm/parameter-store/read/rds_password"
   ]
 }
 
@@ -39,7 +39,7 @@ dependency "route53_zone_finder" {
 }
 
 dependency "parameter_store_fetcher" {
-  config_path = "../ssm/parameter-store/read"
+  config_path = "../ssm/parameter-store/read/rds_password"
 }
 
 // dependency "parameter_store_fetcher" {

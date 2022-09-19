@@ -16,7 +16,7 @@ terraform {
 
 dependencies {
   paths = [
-    "../write/rds_password"
+    "../../write/rds_password"
   ]
 }
 
