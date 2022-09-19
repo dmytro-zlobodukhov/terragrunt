@@ -6,12 +6,12 @@ locals {
   env    = jsondecode(file(find_in_parent_folders("env.json")))
   region = jsondecode(file(find_in_parent_folders("region.json")))
   common = jsondecode(file(find_in_parent_folders("account.json")))
+  app    = jsondecode(file(find_in_parent_folders("app.json")))
 
   ssm_parameter_store_rds_details_prefix = "/${local.common.namespace}/${local.env.env_name}/${local.region.aws_region}/rds/postgres"
   container_name_prefix                  = "${local.common.namespace}-${local.env.env_name}-${local.region.aws_region}"
-  database_name                          = "vaultwarden"
-  app_name                               = "vaultwarden"
-  container_name                         = "${local.container_name_prefix}-vaultwarden"
+  database_name                          = local.app.app_name
+  container_name                         = "${local.container_name_prefix}-${local.app.app_name}"
   container_image                        = "vaultwarden/server:latest"
 }
 
@@ -58,7 +58,7 @@ inputs = {
   namespace   = "${local.common.namespace}"
   stage       = "${local.region.aws_region}"
   environment = "${local.env.env_name}"
-  name        = "${local.app_name}-ingress"
+  name        = "${local.app.app_name}-ingress"
 
   vpc_id                        = dependency.vpc.outputs.vpc_id
   unauthenticated_priority      = 1

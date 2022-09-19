@@ -6,10 +6,11 @@ locals {
   env    = jsondecode(file(find_in_parent_folders("env.json")))
   region = jsondecode(file(find_in_parent_folders("region.json")))
   common = jsondecode(file(find_in_parent_folders("account.json")))
+  app    = jsondecode(file(find_in_parent_folders("app.json")))
 
   ssm_parameter_store_rds_details_prefix = "/${local.common.namespace}/${local.env.env_name}/${local.region.aws_region}/rds/postgres"
   container_name_prefix                  = "${local.common.namespace}-${local.env.env_name}-${local.region.aws_region}"
-  database_name                          = "vaultwarden"
+  database_name                          = local.app.app_name
 }
 
 terraform {
@@ -52,7 +53,7 @@ inputs = {
   // environment = "${local.env.env_name}"
   // name        = "vaultwarden"
 
-  container_name  = "${local.container_name_prefix}-vaultwarden"
+  container_name  = "${local.container_name_prefix}-${local.app.app_name}"
   container_image = "vaultwarden/server:latest"
 
   port_mappings = [
