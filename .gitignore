@@ -44,3 +44,7 @@ terraform.rc
 # Terragrunt execution resultant files
 **/secrets/*
 secrets
+
+# Other files and folders
+.DS_Store
+**/.DS_Store/*
