@@ -14,15 +14,15 @@ terraform {
 
 dependencies {
   paths = [
-    "../../../aws_acm/root",
+    "../../../aws_acm/regional",
     "../../../aws_vpc/vpc",
     "../../../aws_vpc/subnets/common",
     "../../sg/external"
   ]
 }
 
-dependency "acm_root" {
-  config_path = "../../../aws_acm/root"
+dependency "acm" {
+  config_path = "../../../aws_acm/regional"
 }
 
 dependency "vpc" {
@@ -53,7 +53,7 @@ inputs = {
   http_redirect      = true
   https_enabled      = true
   https_port         = 443
-  certificate_arn    = dependency.acm_root.outputs.arn
+  certificate_arn    = dependency.acm.outputs.arn
 
   alb_access_logs_s3_bucket_force_destroy         = true
   alb_access_logs_s3_bucket_force_destroy_enabled = true
