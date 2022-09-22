@@ -1,3 +1,4 @@
 {
-    "aws_region": "eu-west-1"
+    "aws_region": "eu-west-1",
+    "aws_acm_cloudfront_region": "us-east-1"
 }
